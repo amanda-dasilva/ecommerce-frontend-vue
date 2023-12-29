@@ -4,7 +4,7 @@
     <div class="row">
       <div class="col-12 text-center pt-3">
         <router-link :to="{ name: 'Home' }">
-          <img id="logo" src="../assets/icon.png" />
+          <img id="logo" src="../assets/logo.png" />
         </router-link>
       </div>
     </div>
@@ -65,7 +65,7 @@
                 required
               />
             </div>
-            <button type="submit" class="btn btn-primary mt-2 py-0">
+            <button type="submit" class="btn btn-secondary mt-2 py-0">
               Create Account
             </button>
           </form>
@@ -74,9 +74,17 @@
     </div>
   </div>
 </template>
+
 <script>
-const axios = require('axios');
+import axios from 'axios';
 import swal from 'sweetalert';
+
+const api = axios.create({
+  headers: {
+    'Content-Type': 'application/json'
+  }
+});
+
 export default {
   name: 'SignupView',
   props: ['baseURL'],
@@ -100,17 +108,10 @@ export default {
           firstName: this.firstName,
           lastName: this.lastName,
           password: this.password,
-        };
-
-        // call the API
-        await axios({
-          method: 'post',
-          url: this.baseURL + 'user/signup',
-          data: JSON.stringify(user),
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        })
+        }
+        try{
+          // call the API
+          await api.post(`${this.baseURL}user/signup`, JSON.stringify(user))
           .then(() => {
             // redirect to home page
             this.$router.replace('/');
@@ -119,10 +120,10 @@ export default {
               icon: 'success',
               closeOnClickOutside: false,
             });
-          })
-          .catch((err) => {
-            console.log(err);
-          });
+        })}
+        catch (error){
+          console.log(error);
+        }
       } else {
         // passwords are not matching
         swal({
@@ -145,7 +146,7 @@ export default {
   border-color: #adb1b8 #a2a6ac #a2a6ac;
 }
 
-.btn-primary {
+.btn-secondary {
   background-color: #f0c14b;
   color: black;
   border-color: #a88734 #9c7e31 #846a29;
