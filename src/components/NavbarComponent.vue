@@ -66,6 +66,9 @@
         <router-link id="signup" style="color: white" :to="{ name: 'Signup' }">
           Signup
         </router-link>
+        <router-link id="signin" style="color: white" :to="{ name: 'Signin' }">
+          Signin
+        </router-link>
       </div>
     </div>
   </nav>
