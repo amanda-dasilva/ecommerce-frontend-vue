@@ -3,7 +3,7 @@
     <!--    Logo Div-->
     <div class="row">
       <div class="col-12 text-center pt-3">
-        <router-link :to="{name : 'Home'}">
+        <router-link :to="{ name: 'Home' }">
           <img id="logo" src="../assets/logo.png" />
         </router-link>
       </div>
@@ -19,7 +19,7 @@
               <input
                 type="email"
                 class="form-control"
-                v-model="email"
+                v-model.trim="email"
                 required
               />
             </div>
@@ -28,7 +28,7 @@
               <input
                 type="password"
                 class="form-control"
-                v-model="password"
+                v-model.trim="password"
                 required
               />
             </div>
@@ -66,6 +66,14 @@
 </template>
 
 <script>
+import axios from 'axios';
+import swal from 'sweetalert';
+
+const api = axios.create({
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
 export default {
   name: 'SigninView',
   props: ['baseURL'],
@@ -76,7 +84,47 @@ export default {
       loading: null,
     };
   },
-  methods: {},
+  methods: {
+    async signup(e) {
+      e.preventDefault();
+      this.loading = true;
+      const user = {
+        email: this.email,
+        password: this.password,
+      };
+      try {
+        // call the API
+        await api
+          .post(`${this.baseURL}user/signIn`, JSON.stringify(user))
+          .then(() => {
+            // redirect to home page
+            this.$router.replace('/');
+            swal({
+              text: 'User signIn successful!',
+              icon: 'success',
+              closeOnClickOutside: false,
+            });
+          });
+      } catch (error) {
+        console.log(error);
+        if (error.response && error.response.status === 401) {
+          swal({
+            text: 'Invalid email or password. Please try again.',
+            icon: 'error',
+            closeOnClickOutside: false,
+          });
+        } else {
+          swal({
+            text: 'An unexpected error occurred. Please try again later.',
+            icon: 'error',
+            closeOnClickOutside: false,
+          });
+        }
+      } finally {
+        this.loading = false;
+      }
+    },
+  },
   mounted() {
     this.loading = false;
   },

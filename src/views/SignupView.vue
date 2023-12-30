@@ -19,7 +19,7 @@
               <input
                 type="email"
                 class="form-control"
-                v-model="email"
+                v-model.trim="email"
                 required
               />
             </div>
@@ -30,7 +30,7 @@
                   <input
                     type="name"
                     class="form-control"
-                    v-model="firstName"
+                    v-model.trim="firstName"
                     required
                   />
                 </div>
@@ -41,7 +41,7 @@
                   <input
                     type="name"
                     class="form-control"
-                    v-model="lastName"
+                    v-model.trim="lastName"
                     required
                   />
                 </div>
@@ -52,7 +52,7 @@
               <input
                 type="password"
                 class="form-control"
-                v-model="password"
+                v-model.trim="password"
                 required
               />
             </div>
@@ -61,7 +61,7 @@
               <input
                 type="password"
                 class="form-control"
-                v-model="passwordConfirm"
+                v-model.trim="passwordConfirm"
                 required
               />
             </div>
