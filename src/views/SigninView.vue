@@ -96,11 +96,13 @@ export default {
         // call the API
         await api
           .post(`${this.baseURL}user/signIn`, JSON.stringify(user))
-          .then(() => {
+          .then(res => {
+            // login successful, we will get token in res.data object
+            localStorage.setItem('token', res.data.token);
             // redirect to home page
             this.$router.replace('/');
             swal({
-              text: 'User signIn successful!',
+              text: 'Login successful!',
               icon: 'success',
               closeOnClickOutside: false,
             });
