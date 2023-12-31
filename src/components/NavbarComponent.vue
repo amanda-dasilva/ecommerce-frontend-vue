@@ -48,57 +48,104 @@
           </div>
         </div>
       </form>
-      <div>
-        <router-link
-          id="category"
-          style="color: white"
-          :to="{ name: 'AdminCategory' }"
-        >
-          Category
-        </router-link>
-        <router-link
-          id="product"
-          style="color: white"
-          :to="{ name: 'AdminProduct' }"
-        >
-          Products
-        </router-link>
-        <router-link id="signup" style="color: white" :to="{ name: 'Signup' }">
-          Signup
-        </router-link>
-        <router-link id="signin" style="color: white" :to="{ name: 'Signin' }">
-          Signin
-        </router-link>
-      </div>
     </div>
+    <div></div>
+    <!--      Admin drop down-->
+    <li class="nav-item dropdown">
+      <a
+        class="nav-link text-light dropdown-toggle"
+        href="#"
+        id="navbarDropdownAdmin"
+        role="button"
+        data-toggle="dropdown"
+        aria-haspopup="true"
+        aria-expanded="false"
+      >
+        Admin
+      </a>
+      <div class="dropdown-menu" aria-labelledby="navbarDropdownAdmin">
+        <router-link class="dropdown-item" :to="{ name: 'AdminCategory' }"
+          >Category</router-link
+        >
+        <router-link class="dropdown-item" :to="{ name: 'AdminProduct' }"
+          >Products</router-link
+        >
+      </div>
+    </li>
+
+    <!--      Account drop down-->
+    <li class="nav-item dropdown">
+      <a
+        class="nav-link text-light dropdown-toggle"
+        href="#"
+        id="navbarDropdown"
+        role="button"
+        data-toggle="dropdown"
+        aria-haspopup="true"
+        aria-expanded="false"
+      >
+        Accounts
+      </a>
+      <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+        <router-link
+          class="dropdown-item"
+          v-if="!token"
+          :to="{ name: 'Signin' }"
+          >Log In</router-link
+        >
+        <router-link
+          class="dropdown-item"
+          v-if="!token"
+          :to="{ name: 'Signup' }"
+          >Sign Up</router-link
+        >
+        <a class="dropdown-item" v-if="token" href="#" @click="signout"
+          >Sign Out</a
+        >
+      </div>
+    </li>
   </nav>
 </template>
 
 <script>
+import swal from 'sweetalert';
 export default {
   name: 'NavbarComponent',
-  data() {},
-  methods: {},
+  data() {
+    return {
+      token: null,
+    };
+  },
+  methods: {
+    signout() {
+      // delete the token from local storage
+      localStorage.removeItem('token');
+      this.token = null;
+      //redirect to home page
+      this.$router.push({ name: 'Home' });
+      //show a sweet alert
+      swal({
+        text: 'Logged you out. Visit Again',
+        icon: 'success',
+        closeOnClickOutside: false,
+      });
+    },
+  },
+  mounted() {
+    this.token = localStorage.getItem('token');
+  },
 };
 </script>
 
 <style scoped>
 #logo {
-  width: 200px;
-  margin-top: 5px;
+  width: 150px;
   margin-left: 20px;
   margin-right: 20px;
-  margin-bottom: 5px;
-  border-radius: 5px;
 }
 
 .nav-link {
-  color: rgb(37, 37, 37);
-}
-
-#product {
-  margin-left: 10px;
-  margin-right: 10px;
+  color: rgba(255, 255, 255);
 }
 
 #search-button-navbar {
