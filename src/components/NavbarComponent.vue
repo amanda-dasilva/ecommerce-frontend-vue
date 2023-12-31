@@ -2,7 +2,7 @@
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <!--    Logo-->
     <router-link class="navbar-brand" :to="{ name: 'Home' }">
-      <img id="logo" src="../assets/logo.png" />
+      <img id="logo" :src="require('@/assets/logo.png')" />
     </router-link>
 
     <!--    Burger Button-->
@@ -23,12 +23,14 @@
       <form class="form-inline ml-auto mr-auto">
         <div class="input-group">
           <input
+            :class="{ 'form-control': true, 'disabled': !token }"
             size="100"
             type="text"
             class="form-control"
             placeholder="Search Items"
             aria-label="Username"
             aria-describedby="basic-addon1"
+            v-model="searchQuery"
           />
           <div class="input-group-prepend">
             <span class="input-group-text" id="search-button-navbar">
@@ -64,12 +66,10 @@
         Admin
       </a>
       <div class="dropdown-menu" aria-labelledby="navbarDropdownAdmin">
-        <router-link class="dropdown-item" :to="{ name: 'AdminCategory' }"
-          >Category</router-link
-        >
-        <router-link class="dropdown-item" :to="{ name: 'AdminProduct' }"
-          >Products</router-link
-        >
+        <ul>
+          <li><router-link class="dropdown-item" :to="{ name: 'AdminCategory' }">Category</router-link></li>
+          <li><router-link class="dropdown-item" :to="{ name: 'AdminProduct' }">Products</router-link></li>
+        </ul>
       </div>
     </li>
 
@@ -99,9 +99,7 @@
           :to="{ name: 'Signup' }"
           >Sign Up</router-link
         >
-        <a class="dropdown-item" v-if="token" href="#" @click="signout"
-          >Sign Out</a
-        >
+        <a class="dropdown-item" v-if="token" href="#" @click.prevent="signout">Sign Out</a>
       </div>
     </li>
   </nav>
