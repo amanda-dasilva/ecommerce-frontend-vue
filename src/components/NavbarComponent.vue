@@ -1,11 +1,11 @@
 <template>
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <!--    Logo-->
+    <!-- Logo -->
     <router-link class="navbar-brand" :to="{ name: 'Home' }">
       <img id="logo" :src="require('@/assets/logo.png')" />
     </router-link>
 
-    <!--    Burger Button-->
+    <!-- Burger Button -->
     <button
       class="navbar-toggler"
       type="button"
@@ -23,7 +23,7 @@
       <form class="form-inline ml-auto mr-auto">
         <div class="input-group">
           <input
-            :class="{ 'form-control': true, 'disabled': !token }"
+            :class="{ 'form-control': true, disabled: !token }"
             size="100"
             type="text"
             class="form-control"
@@ -50,63 +50,20 @@
           </div>
         </div>
       </form>
-    </div>
-    <div></div>
-    <!--      Admin drop down-->
-    <li class="nav-item dropdown">
-      <a
-        class="nav-link text-light dropdown-toggle"
-        href="#"
-        id="navbarDropdownAdmin"
-        role="button"
-        data-toggle="dropdown"
-        aria-haspopup="true"
-        aria-expanded="false"
-      >
-        Admin
-      </a>
-      <div class="dropdown-menu" aria-labelledby="navbarDropdownAdmin">
-        <ul>
-          <li><router-link class="dropdown-item" :to="{ name: 'AdminCategory' }">Category</router-link></li>
-          <li><router-link class="dropdown-item" :to="{ name: 'AdminProduct' }">Products</router-link></li>
-        </ul>
-      </div>
-    </li>
 
-    <!--      Account drop down-->
-    <li class="nav-item dropdown">
-      <a
-        class="nav-link text-light dropdown-toggle"
-        href="#"
-        id="navbarDropdown"
-        role="button"
-        data-toggle="dropdown"
-        aria-haspopup="true"
-        aria-expanded="false"
-      >
-        Accounts
-      </a>
-      <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-        <router-link
-          class="dropdown-item"
-          v-if="!token"
-          :to="{ name: 'Signin' }"
-          >Log In</router-link
-        >
-        <router-link
-          class="dropdown-item"
-          v-if="!token"
-          :to="{ name: 'Signup' }"
-          >Sign Up</router-link
-        >
-        <a class="dropdown-item" v-if="token" href="#" @click.prevent="signout">Sign Out</a>
-      </div>
-    </li>
+      <!-- Admin Dropdown -->
+      <AdminDropdown />
+      
+      <!-- Account Dropdown -->
+      <AccountDropdown :token="token" @signout="signout" />
+    </div>
   </nav>
 </template>
 
 <script>
 import swal from 'sweetalert';
+import AdminDropdown from './AdminDropdownComponent.vue';
+import AccountDropdown from './AccountDropdownComponent.vue';
 export default {
   name: 'NavbarComponent',
   data() {
@@ -131,6 +88,10 @@ export default {
   },
   mounted() {
     this.token = localStorage.getItem('token');
+  },
+  components: {
+    AdminDropdown,
+    AccountDropdown,
   },
 };
 </script>
