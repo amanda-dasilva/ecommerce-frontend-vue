@@ -85,7 +85,7 @@ export default {
     };
   },
   methods: {
-    async signup(e) {
+    async signin(e) {
       e.preventDefault();
       this.loading = true;
       const user = {
