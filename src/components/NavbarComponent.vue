@@ -55,7 +55,7 @@
       <AdminDropdown />
       
       <!-- Account Dropdown -->
-      <AccountDropdown :token="token" @signout="signout" />
+      <AccountDropdown :token="loggedIn" @signout="signout" />
     </div>
   </nav>
 </template>
@@ -68,14 +68,14 @@ export default {
   name: 'NavbarComponent',
   data() {
     return {
-      token: null,
+      loggedIn: false,
     };
   },
   methods: {
     signout() {
       // delete the token from local storage
       localStorage.removeItem('token');
-      this.token = null;
+      this.loggedIn = false;
       //redirect to home page
       this.$router.push({ name: 'Home' });
       //show a sweet alert
@@ -87,7 +87,7 @@ export default {
     },
   },
   mounted() {
-    this.token = localStorage.getItem('token');
+    this.loggedIn = localStorage.getItem('token');
   },
   components: {
     AdminDropdown,
