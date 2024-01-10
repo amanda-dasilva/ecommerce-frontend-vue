@@ -35,8 +35,17 @@
           >
             Add to wishlist
           </button>
+          <!-- Add to cart button-->
+          <button
+            type="button"
+            id="add-to-cart-button"
+            class="btn"
+            @click="addToCart(this.id)"
+          >
+            Add to Cart
+            <ion-icon name="cart-outline" v-pre></ion-icon>
+          </button>
         </div>
-
         <!-- Dummy placeholder features -->
         <div class="features pt-3">
           <h5><strong>Features</strong></h5>
@@ -108,6 +117,44 @@ export default {
         // Handle error gracefully, show a user-friendly message, etc.
       }
     },
+    // add to cart function
+    async addToCart(productId) {
+      try {
+        await api
+          // post productId and quantity
+          .post(`${this.baseURL}cart/add?token=${this.token}`, {
+            id: productId,
+            quantity: this.quantity,
+          })
+          .then(
+            (response) => {
+              if (response.status == 201) {
+                swal({
+                  text: 'Product Added to the cart!',
+                  icon: 'success',
+                });
+              } else {
+                swal({
+                  text: 'Unexpected response from the server',
+                  icon: 'error',
+                  closeOnClickOutside: false,
+                });
+              }
+            },
+            (error) => {
+              console.log(error);
+              swal({
+                text: 'Something wrong with add to cart',
+                icon: 'error',
+                closeOnClickOutside: false,
+              });
+            }
+          );
+      } catch (error) {
+        console.error(error);
+        // Handle error gracefully, show a user-friendly message, etc.
+      }
+    },
   },
   mounted() {
     this.id = this.$route.params.id;
@@ -130,5 +177,9 @@ input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
+}
+
+#add-to-cart-button {
+  background-color: #febd69;
 }
 </style>
