@@ -119,13 +119,14 @@ export default {
     },
     // add to cart function
     async addToCart(productId) {
+      const addItem = {
+        productId : productId,
+        quantity: this.quantity,
+      }
       try {
         await api
           // post productId and quantity
-          .post(`${this.baseURL}cart/add?token=${this.token}`, {
-            id: productId,
-            quantity: this.quantity,
-          })
+          .post(`${this.baseURL}cart/add?token=${this.token}`, JSON.stringify(addItem))
           .then(
             (response) => {
               if (response.status == 201) {
