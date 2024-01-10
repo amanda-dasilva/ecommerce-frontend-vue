@@ -21,12 +21,18 @@ import axios from 'axios';
 import Navbar from "./components/NavbarComponent.vue"
 import Footer from "./components/FooterComponent.vue"
 
+const api = axios.create({
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
 export default {
   data() {
     return {
       baseURL: process.env.VUE_APP_API_BASE_URL || "http://localhost:8080/",
       products: null,
       categories: null,
+      cartItems: null,
     };
   },
 
@@ -35,7 +41,7 @@ export default {
     // fetch products
     async fetchProducts() {
       try {
-        const res = await axios.get(this.baseURL + 'product/');
+        const res = await api.get(this.baseURL + 'product/');
         this.products = res.data;
       } catch (error) {
         console.error(error);
@@ -44,7 +50,7 @@ export default {
     //fetch categories
     async fetchCategories() {
       try {
-        const res = await axios.get(this.baseURL + 'category/');
+        const res = await api.get(this.baseURL + 'category/');
         this.categories = res.data;
       } catch (error) {
         console.error(error);
