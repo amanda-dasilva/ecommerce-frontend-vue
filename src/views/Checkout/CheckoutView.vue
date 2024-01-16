@@ -18,7 +18,7 @@
     </div>
   </div>
 </template>
-<script lang="ts">
+<script>
 import axios from 'axios';
 
 const api = axios.create({

@@ -1,8 +1,9 @@
 <template>
-  <div class="alert alert-danger" role="alert">Payment successful</div>
+  <div class="alert alert-danger" role="alert">
+    Payment successful</div>
 </template>
 
-<script lang="ts">
+<script>
 export default {
   name: 'PaymentSuccess',
   props: ['baseURL'],
