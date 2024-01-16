@@ -11,6 +11,8 @@ import Signup from "../views/SignupView";
 import Signin from "../views/SigninView";
 import WishList from "../views/Product/WishList";
 import Cart from "../views/Cart/CartView";
+import Success from "../views/Payment/PaymentSuccess";
+import Failed from "../views/Payment/PaymentFailed";
 
 const routes = [
   {
@@ -72,6 +74,16 @@ const routes = [
     path : '/cart',
     name : 'Cart',
     component : Cart
+  },
+  {
+    path: '/payment/success',
+    name: 'PaymentSuccess',
+    component:Success
+  },
+  {
+    path: '/payment/failed',
+    name: 'PaymentFailed',
+    component:Failed
   },
 ]
 
