@@ -13,6 +13,7 @@ import WishList from "../views/Product/WishList";
 import Cart from "../views/Cart/CartView";
 import Success from "../views/Payment/PaymentSuccess";
 import Failed from "../views/Payment/PaymentFailed";
+import Checkout from "../views/Checkout/CheckoutView";
 
 const routes = [
   {
@@ -84,6 +85,11 @@ const routes = [
     path: '/payment/failed',
     name: 'PaymentFailed',
     component:Failed
+  },
+  {
+    path : '/checkout',
+    name : 'Checkout',
+    component : Checkout
   },
 ]
 
