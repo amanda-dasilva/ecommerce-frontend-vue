@@ -76,6 +76,8 @@ export default {
       // delete the token from local storage
       localStorage.removeItem('token');
       this.loggedIn = false;
+      //delete session ID
+      localStorage.removeItem('sessionId');
       //redirect to home page
       this.$router.push({ name: 'Home' });
       //show a sweet alert
