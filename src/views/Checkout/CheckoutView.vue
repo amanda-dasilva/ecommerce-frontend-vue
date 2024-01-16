@@ -29,29 +29,107 @@ const api = axios.create({
 export default {
   data() {
     return {
+      stripeAPIToken:
+        'pk_test_51OZAu8E7RgzaTJPihQyoXKyQlvQvOXEizxYRw7Ypv2TKzL42eVs0FAdOPePrIyriITbtz7QVfiemg6TbTCoz78Pk00YGUVLetV',
+      stripe: '',
       token: null,
+      sessionId: null,
+      checkoutBodyArray: [],
     };
   },
+
   name: 'CheckoutView',
   props: ['baseURL'],
   methods: {
-    async goToCheckout() {
-      try {
-        await api.post(`${this.baseURL}category/update/${this.id}`)
-        .then(() => {
-          //sending the event to parent to handle
-          this.$emit("fetchData");
-          this.$router.push({name : 'AdminCategory'})},
+    /*
+            Includes Stripe.js dynamically
+        */
+    includeStripe(URL, callback) {
+      let documentTag = document,
+        tag = 'script',
+        object = documentTag.createElement(tag),
+        scriptTag = documentTag.getElementsByTagName(tag)[0];
+      object.src = '//' + URL;
+      if (callback) {
+        object.addEventListener(
+          'load',
+          function (e) {
+            callback(null, e);
+          },
+          false
         );
-      } catch (error) {
-        console.error(error);
-        // Handle error gracefully, show a user-friendly message, etc.
       }
+      scriptTag.parentNode.insertBefore(object, scriptTag);
+    },
+
+    /*
+            Configures Stripe by setting up the elements and
+            creating the card element.
+        */
+    configureStripe() {
+      /* global Stripe */
+      this.stripe = Stripe(this.stripeAPIToken);
+    },
+
+    // get all cart Items for the user
+    async getAllCartItems() {
+      await api.get(`${this.baseURL}cart/?token=${this.token}`)
+      .then(
+        (response) => {
+          if (response.status == 200) {
+            let cartItems = response.data.cartItems;
+            // for each cart item populate the checkoutBodyArray Array
+            cartItems.forEach((item) => {
+              this.checkoutBodyArray.push({
+                productName: item.product.name,
+                quantity: item.quantity,
+                price: item.product.price,
+                productId: item.product.id,
+              });
+            });
+          }
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
+    },
+
+    // checkout
+    async goToCheckout() {
+      // first call the create-checkout-session with checkoutBodyArray
+      await api
+        .post(
+          `${this.baseURL}order/create-checkout-session`,
+          this.checkoutBodyArray
+        )
+        .then((response) => {
+          // receive the sessionId in response
+          localStorage.setItem('sessionId', response.data.sessionId);
+          return response.data;
+        })
+        .then((session) => {
+          // redirect to checkout page of stripe
+          return this.stripe.redirectToCheckout({
+            sessionId: session.sessionId,
+          });
+        });
     },
   },
   mounted() {
     // get the token
     this.token = localStorage.getItem('token');
+
+    // configure include stripe
+    this.includeStripe(
+      'js.stripe.com/v3/',
+      function () {
+        this.configureStripe();
+      }.bind(this)
+    );
+
+    // get all the cart items
+    this.getAllCartItems();
   },
 };
 </script>
