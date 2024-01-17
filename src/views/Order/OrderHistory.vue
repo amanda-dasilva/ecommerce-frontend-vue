@@ -15,9 +15,9 @@
       <div class="col-md-5 px-3">
         <div class="card-block px-3">
           <h6 class="card-title">
-            <router-link :to="'/orders'">Order No: {{ order.id }}</router-link>
+            <router-link v-bind:to="'/order/'+order.id">Order No: {{ order.id }}</router-link>
           </h6>
-          <p class="mb-0">{{ order.totalItems }} item<span v-if="order.totalItems > 1">s</span></p>
+          <p class="mb-0">{{ order.totalItems }} item<span v-if="order.totalItems !== 1">s</span></p>
           <p id="item-price" class="mb-0 font-weight-bold">Total Cost: $ {{ order.totalCost }}</p>
           <p id="item-total-price">Ordered on: {{ order.orderdate }}</p>
         </div>
@@ -59,6 +59,7 @@ export default {
       try {
         const res = await api.get(`${this.baseURL}order/`);
         if (res.status === 200) {
+          console.log(res.data); // Log the response to the console for inspection
           this.orderList = res.data.map(order => ({
             id: order.id,
             totalCost: order.totalPrice,
@@ -66,7 +67,8 @@ export default {
             imageURL: order.orderItems && order.orderItems.length > 0 && order.orderItems[0].product.imageURL
               ? order.orderItems[0].product.imageURL
               : '',
-            totalItems: order.orderItems ? order.orderItems.length : 0,
+            
+            totalItems: order.orderItems && order.orderItems.length > 0 ? order.orderItems.length : 0,
           }));
         }
       } catch (error) {
