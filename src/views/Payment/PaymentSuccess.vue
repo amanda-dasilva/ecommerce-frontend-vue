@@ -23,7 +23,7 @@ export default {
   },
   methods:{
     async saveOrder() {
-      await api.post(`${this.baseURL}order/add/?token=${this.token}&sessionId=${this.sessionId}`)
+      await api.post(`${this.baseURL}order/add?token=${this.token}&sessionId=${this.sessionId}`)
               .then(()=>{
                 //window.location.href = '/order'
                 //document.getElementById("message").innerHTML = "order placed";
