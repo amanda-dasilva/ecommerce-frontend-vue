@@ -9,8 +9,8 @@
       </div>
 
       <button
-        class="btn checkout_button"
-        id="proceed-to-checkout"
+        class="btn btn-success"
+        id="proceed-to-checkout"        
         @click="goToCheckout()"
       >
         Make payment
