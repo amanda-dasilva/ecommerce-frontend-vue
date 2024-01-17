@@ -73,8 +73,7 @@ export default {
 
     // get all cart Items for the user
     async getAllCartItems() {
-      await api.get(`${this.baseURL}cart/?token=${this.token}`)
-      .then(
+      await api.get(`${this.baseURL}cart/?token=${this.token}`).then(
         (response) => {
           if (response.status == 200) {
             let cartItems = response.data.cartItems;

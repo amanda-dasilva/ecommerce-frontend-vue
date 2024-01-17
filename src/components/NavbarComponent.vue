@@ -68,6 +68,8 @@ export default {
   name: 'NavbarComponent',
   data() {
     return {
+      token: null,
+      searchQuery: '',
       loggedIn: false,
     };
   },
@@ -89,7 +91,7 @@ export default {
     },
   },
   mounted() {
-    this.loggedIn = localStorage.getItem('token');
+    this.loggedIn = localStorage.getItem('token')!== null;
   },
   components: {
     AdminDropdown,

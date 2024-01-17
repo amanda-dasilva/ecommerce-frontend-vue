@@ -76,7 +76,7 @@ export default {
           const result = response.data;
           // store cartitems and total price in two variables
           this.cartItems = result.cartItems;
-          this.totalcost = result.totalCost
+          // this.totalcost = result.totalCost
         }
       },
       (error)=>{
